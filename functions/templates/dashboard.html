@@ -4,40 +4,40 @@
 <h2>Dashboard</h2>
 <table>
     <thead>
-        <tr>
-            <th>Function Name</th>
-            <th>Status</th>
-            <th>Last Deployed</th>
-            <th>Output</th>  <!-- New column for output -->
-            <th>Actions</th>
-        </tr>
+    <tr>
+        <th>Function Name</th>
+        <th>Status</th>
+        <th>Last Deployed</th>
+        <th>Output</th>  <!-- New column for output -->
+        <th>Actions</th>
+    </tr>
     </thead>
     <tbody>
-        {% for function in functions %}
-        <tr>
-            <td>{{ function.name }}</td>
-            <td>{{ function.status }}</td>
-            <td>{{ function.last_deployed|date:"Y-m-d H:i" }}</td>
-            <td>
-                {% if function.output %}
-                    <pre>{{ function.output }}</pre>
-                {% else %}
-                    No output yet.
-                {% endif %}
-            </td>
-            <td>
-                {% if function.status != 'DEPLOYED' %}
-                    <a href="{% url 'deploy_function' function.id %}">Deploy</a>
-                {% else %}
-                    Deployed
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No functions deployed yet.</td>
-        </tr>
-        {% endfor %}
+    {% for function in functions %}
+    <tr>
+        <td>{{ function.name }}</td>
+        <td>{{ function.status }}</td>
+        <td>{{ function.last_deployed|date:"Y-m-d H:i" }}</td>
+        <td>
+            {% if function.output %}
+            <pre>{{ function.output }}</pre>
+            {% else %}
+            No output yet.
+            {% endif %}
+        </td>
+        <td>
+            {% if function.status != 'DEPLOYED' %}
+            <a href="{% url 'deploy_function' function.id %}">Deploy</a>
+            {% else %}
+            Deployed
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">No functions deployed yet.</td>
+    </tr>
+    {% endfor %}
     </tbody>
 </table>
 {% endblock %}

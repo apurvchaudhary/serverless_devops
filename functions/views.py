@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from functions.models import ServerlessFunction
 from django.views.decorators.http import require_http_methods
+
 from functions.forms import FunctionUploadForm
+from functions.models import ServerlessFunction
 from functions.utils import save_function_file, run_function_file
 
 
-@require_http_methods(["GET",])
+@require_http_methods(["GET", ])
 def dashboard(request):
     functions = ServerlessFunction.objects.all()
     return render(request, 'dashboard.html', {'functions': functions})

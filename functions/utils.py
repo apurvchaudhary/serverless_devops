@@ -1,10 +1,11 @@
-from functions.constants import FUNCTION_FILE_PATH
-from django.utils.timezone import now
 import subprocess
+
+from django.utils.timezone import now
+
+from functions.constants import FUNCTION_FILE_PATH
 
 
 def save_function_file(function, function_file):
-
     func_path = f"{FUNCTION_FILE_PATH}/{function.id}_{function_file.name}"
 
     with open(func_path, 'wb+') as destination:
@@ -17,7 +18,6 @@ def save_function_file(function, function_file):
 
 
 def run_function_file(function):
-
     try:
         result = subprocess.run(
             ['python', function.function_file_path],

@@ -1,6 +1,6 @@
 from django.urls import path
-from functions import views
 
+from functions import views
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
