@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from functions.models import ServerlessFunction
 from django.views.decorators.http import require_http_methods
 from functions.forms import FunctionUploadForm
-from django.utils.timezone import now
+from functions.utils import save_function_file, run_function_file
 
 
 @require_http_methods(["GET",])
@@ -16,29 +16,23 @@ def upload_function(request):
     if request.method == 'POST':
         form = FunctionUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            # Handle the uploaded file
             name = form.cleaned_data['name']
             description = form.cleaned_data['description']
             function_file = request.FILES['function_file']
-
-            # Save the file and function metadata in the database
             function = ServerlessFunction.objects.create(
                 name=name,
                 description=description,
                 status='PENDING'
             )
-
-            # Save the function file to the media directory
-            with open(f'media/functions/{function.id}_{function_file.name}', 'wb+') as destination:
-                for chunk in function_file.chunks():
-                    destination.write(chunk)
-
-            function.last_deployed = now()
-            function.save()
-
+            save_function_file(function, function_file)
             return redirect('dashboard')
-
     else:
         form = FunctionUploadForm()
-
     return render(request, 'upload.html', {'form': form})
+
+
+@require_http_methods(["GET", "POST"])
+def deploy_function(request, function_id):
+    function = ServerlessFunction.objects.get(id=function_id)
+    run_function_file(function)
+    return redirect('dashboard')
