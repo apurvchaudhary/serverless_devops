@@ -25,8 +25,8 @@ def run_function_file(function):
             text=True,
             timeout=30
         )
-        function.status = 'DEPLOYED'
         function.last_deployed = now()
+        function.status = 'DEPLOYED' if result.returncode == 0 else 'ERROR'
         function.output = result.stdout if result.returncode == 0 else result.stderr
         function.save()
     except subprocess.TimeoutExpired:

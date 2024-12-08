@@ -9,6 +9,11 @@
 </head>
 <body>
 <header>
+    <div
+            style="text-align: left;">
+        <button onclick="location.href='{% url 'dashboard' %}';">Home
+        </button>
+    </div>
     <h1>Serverless DevOps Platform</h1>
 </header>
 <main>
@@ -16,7 +21,12 @@
     {% endblock %}
 </main>
 <footer>
-    <p>&copy; 2024 Serverless DevOps</p>
+    <div style="text-align: left;">
+        <button onclick="history.back()">Back</button>
+        <button
+                onclick="history.forward()">Forward
+        </button>
+    </div>
 </footer>
 </body>
 </html>

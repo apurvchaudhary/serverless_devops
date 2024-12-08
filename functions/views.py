@@ -37,3 +37,9 @@ def deploy_function(request, function_id):
     function = ServerlessFunction.objects.get(id=function_id)
     run_function_file(function)
     return redirect('dashboard')
+
+
+@require_http_methods(["GET", "POST"])
+def output_function(request, function_id):
+    function = ServerlessFunction.objects.get(id=function_id)
+    return render(request, 'function_output.html', {'function': function})

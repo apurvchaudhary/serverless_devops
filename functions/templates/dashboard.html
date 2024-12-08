@@ -3,7 +3,6 @@
 {% block content %}
 <h2>Dashboard</h2>
 <table>
-    <thead>
     <tr>
         <th>Function Name</th>
         <th>Status</th>
@@ -11,7 +10,6 @@
         <th>Output</th>  <!-- New column for output -->
         <th>Actions</th>
     </tr>
-    </thead>
     <tbody>
     {% for function in functions %}
     <tr>
@@ -20,7 +18,8 @@
         <td>{{ function.last_deployed|date:"Y-m-d H:i" }}</td>
         <td>
             {% if function.output %}
-            <pre>{{ function.output }}</pre>
+            <button onclick="location.href='{% url 'output_function' function.id %}';" type="button">Check Output
+            </button>
             {% else %}
             No output yet.
             {% endif %}
