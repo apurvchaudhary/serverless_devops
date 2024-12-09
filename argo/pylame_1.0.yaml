@@ -15,20 +15,3 @@ spec:
         image: apurvchaudhary/pylame:1.0
       restartPolicy: Never
   backoffLimit: 3
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: pylame
-  labels:
-    app: pylame
-spec:
-  template:
-    metadata:
-      labels:
-        app: pylame
-    spec:
-      containers:
-      - name: pylame-container
-        image: apurvchaudhary/pylame:1.0
-      restartPolicy: Never
-  backoffLimit: 3
