@@ -12,10 +12,14 @@ class TimeStamp(models.Model):
 class ServerlessFunction(TimeStamp):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
-    status = models.CharField(max_length=20, default='PENDING')
+    status = models.CharField(max_length=20, default="PENDING")
     last_deployed = models.DateTimeField(null=True, blank=True)
-    function_file_path = models.CharField(max_length=200)
+    function_path = models.CharField(max_length=200)
     output = models.TextField(blank=True, null=True)
+    entrypoint = models.CharField(max_length=100, null=True)
+    runtime = models.CharField(max_length=100)
+    version = models.CharField(max_length=100)
+    image = models.CharField(max_length=250, null=True)
 
     objects = models.Manager()
 

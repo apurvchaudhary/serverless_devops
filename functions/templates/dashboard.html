@@ -20,8 +20,12 @@
             {% if function.output %}
             <button onclick="location.href='{% url 'output_function' function.id %}';" type="button">Check Output
             </button>
+            {% elif function.status == 'DEPLOYED' %}
+            Build success
+            <button onclick="location.href='{% url 'function_build_logs' function.id %}';" type="button">Build logs
+            </button>
             {% else %}
-            No output yet.
+            No output yet
             {% endif %}
         </td>
         <td>
@@ -39,4 +43,7 @@
     {% endfor %}
     </tbody>
 </table>
+<br>
+<button onclick="location.href='{% url 'upload_function' %}';" type="button">create function</button>
+<br><br>
 {% endblock %}
