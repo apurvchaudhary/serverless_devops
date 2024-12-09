@@ -1,12 +1,11 @@
-from venv import create
-
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
-from functions.forms import FunctionUploadForm
-from functions.models import ServerlessFunction
-from functions.func_utils import save_function_file, run_function_file
 from functions.docker_utils import DockerBuild
+from functions.forms import FunctionUploadForm
+from functions.func_utils import save_function_file
+from functions.models import ServerlessFunction
+from functions.kube_utils import create_kubernetes_job, remove_file_from_repo
 
 
 @require_http_methods(
@@ -45,7 +44,7 @@ def upload_function(request):
 def deploy_function(request, function_id):
     function = ServerlessFunction.objects.get(id=function_id)
     docker = DockerBuild(function)
-    docker.build()
+    docker.deploy()
     return redirect("dashboard")
 
 
@@ -60,8 +59,21 @@ def function_build_logs(request, function_id):
     function = ServerlessFunction.objects.get(id=function_id)
     context = {"function": function}
     try:
-        with open(f"{function.function_path}/build.log", "r") as logs:
+        with open(f"{function.function_path}/function.log", "r") as logs:
             context["logs"] = logs.read()
     except FileNotFoundError:
         pass
     return render(request, "function_output.html", context)
+
+
+@require_http_methods(["GET"])
+def run_function(request, function_id):
+    function = ServerlessFunction.objects.get(id=function_id)
+    create_kubernetes_job(function)
+    return redirect("dashboard")
+
+
+@require_http_methods(["GET"])
+def remove_orphans(request):
+    remove_file_from_repo()
+    return redirect("dashboard")

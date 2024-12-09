@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: serverless-devops
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: git@github.com:apurvchaudhary/serverless_devops.git
+    targetRevision: HEAD
+    path: argo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: serverless
+
+  syncPolicy:
+
+    automated:
+      selfHeal: true
+      prune: true

@@ -8,4 +8,6 @@ urlpatterns = [
     path("deploy/<int:function_id>/", views.deploy_function, name="deploy_function"),
     path("output/<int:function_id>/", views.output_function, name="output_function"),
     path("build-logs/<int:function_id>/", views.function_build_logs, name="function_build_logs"),
+    path("run/<int:function_id>/", views.run_function, name="run_function"),
+    path("remove-orphans/", views.remove_orphans, name="remove_orphans"),
 ]

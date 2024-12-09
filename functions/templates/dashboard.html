@@ -17,22 +17,21 @@
         <td>{{ function.status }}</td>
         <td>{{ function.last_deployed|date:"Y-m-d H:i" }}</td>
         <td>
-            {% if function.output %}
-            <button onclick="location.href='{% url 'output_function' function.id %}';" type="button">Check Output
-            </button>
-            {% elif function.status == 'DEPLOYED' %}
-            Build success
-            <button onclick="location.href='{% url 'function_build_logs' function.id %}';" type="button">Build logs
+            {% if function.status == 'FAILED' %}
+            <button onclick="location.href='{% url 'output_function' function.id %}';" type="button">logs
             </button>
             {% else %}
-            No output yet
+            <button onclick="location.href='{% url 'function_build_logs' function.id %}';" type="button">logs
+            </button>
             {% endif %}
         </td>
         <td>
-            {% if function.status != 'DEPLOYED' %}
+            {% if function.status == 'DEPLOYED' %}
+            Deployed <a href="{% url 'run_function' function.id %}">Run</a>
+            {% elif function.status == 'FAILED' or function.status == 'CREATED' %}
             <a href="{% url 'deploy_function' function.id %}">Deploy</a>
             {% else %}
-            Deployed
+            {{ function.status }}
             {% endif %}
         </td>
     </tr>
@@ -44,6 +43,7 @@
     </tbody>
 </table>
 <br>
-<button onclick="location.href='{% url 'upload_function' %}';" type="button">create function</button>
+<button onclick="location.href='{% url 'remove_orphans' %}';" type="button">remove orphans</button> <button
+        onclick="location.href='{% url 'upload_function' %}';" type="button">create function</button>
 <br><br>
 {% endblock %}

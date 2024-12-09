@@ -6,6 +6,25 @@ WORKDIR /app
 COPY . /app/
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 ENV PYTHONUNBUFFERED=1
-RUN chmod +x {entrypoint}
-ENTRYPOINT ["python", "{entrypoint}"]
+CMD ["python", "{entrypoint}"]
+"""
+
+KUBE_JOB = """apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {name}-{id}
+  namespace: serverless
+  labels:
+    app: {name}-{id}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {name}-{id}
+    spec:
+      containers:
+      - name: {name}-{id}
+        image: {docker_image}
+      restartPolicy: Never
+  backoffLimit: 3
 """

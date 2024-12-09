@@ -31,7 +31,7 @@ def save_function_file(function, func_file, rq_file=None, entry_file=None):
     function.function_path = func_path
     function.save()
     docker = DockerBuild(function)
-    docker.create()
+    docker.build()
 
 
 def run_function_file(function):
