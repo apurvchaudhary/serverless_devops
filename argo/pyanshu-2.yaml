@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pyanshu-2
+  namespace: serverless
+  labels:
+    app: pyanshu-2
+spec:
+  template:
+    metadata:
+      labels:
+        app: pyanshu-2
+    spec:
+      containers:
+      - name: pyanshu-2
+        image: apurvchaudhary/pyanshu:1.0
+      restartPolicy: Never
+  backoffLimit: 3
