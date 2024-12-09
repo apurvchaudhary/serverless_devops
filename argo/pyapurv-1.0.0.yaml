@@ -1,17 +1,18 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pylame
+  name: pyapurv-1.0.0
+  namespace: serverless
   labels:
-    app: pylame
+    app: pyapurv-1.0.0
 spec:
   template:
     metadata:
       labels:
-        app: pylame
+        app: pyapurv-1.0.0
     spec:
       containers:
-      - name: pylame-container
-        image: apurvchaudhary/pylame:1.0
+      - name: pyapurv-1.0.0
+        image: apurvchaudhary/pyapurv:1.0.0
       restartPolicy: Never
   backoffLimit: 3
