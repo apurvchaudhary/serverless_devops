@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minidjango-6
+  namespace: serverless
+  labels:
+    app: minidjango-6
+spec:
+  template:
+    metadata:
+      labels:
+        app: minidjango-6
+    spec:
+      containers:
+      - name: minidjango-6
+        image: apurvchaudhary/minidjango:1.0.0
+      restartPolicy: Never
+  backoffLimit: 3
