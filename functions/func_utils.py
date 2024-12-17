@@ -36,7 +36,12 @@ def save_function_file(function, func_file, rq_file=None, entry_file=None):
 
 def run_function_file(function):
     try:
-        result = subprocess.run(["python", function.function_file_path], capture_output=True, text=True, timeout=30)
+        result = subprocess.run(
+            ["python", function.function_file_path],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
         function.last_deployed = now()
         function.status = "DEPLOYED" if result.returncode == 0 else "ERROR"
         function.output = result.stdout if result.returncode == 0 else result.stderr

@@ -6,12 +6,15 @@
 
 <h3>Output</h3>
 
-<pre style="height: 25pc; overflow-y: scroll;">
+<pre style="height: 25pc; overflow-y: scroll; background:black; color:white;">
   {% if logs %}
   {{ logs }}
             {% else %}
             {{ function.output }}
             {% endif %}
 </pre>
-
+<br>
+            <button onclick="location.href='{% url 'pod_logs' function.id 0 %}';" type="button">Running logs
+            </button>
+<br><br>
 {% endblock %}

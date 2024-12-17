@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
+from django.http import StreamingHttpResponse
 
 from functions.docker_utils import DockerBuild
 from functions.forms import FunctionUploadForm
 from functions.func_utils import save_function_file
 from functions.models import ServerlessFunction
-from functions.kube_utils import create_kubernetes_job, remove_file_from_repo
+from functions.kube_utils import (
+    create_kubernetes_job,
+    remove_file_from_repo,
+    stream_pod_logs,
+)
 
 
 @require_http_methods(
@@ -31,7 +36,11 @@ def upload_function(request):
             rq_file = request.FILES.get("rq_file")
             entrypoint = request.FILES.get("entrypoint")
             function = ServerlessFunction.objects.create(
-                name=name, description=description, status="PENDING", runtime=runtime, version=version
+                name=name,
+                description=description,
+                status="PENDING",
+                runtime=runtime,
+                version=version,
             )
             save_function_file(function, function_file, rq_file, entrypoint)
             return redirect("dashboard")
@@ -77,3 +86,14 @@ def run_function(request, function_id):
 def remove_orphans(request):
     remove_file_from_repo()
     return redirect("dashboard")
+
+
+@require_http_methods(["GET"])
+def pod_logs_view(request, function_id, stream):
+    function = ServerlessFunction.objects.get(id=function_id)
+    if stream == 0:
+        return render(request, "pod_logs.html", {"function": function})
+    elif stream == 1:
+        return StreamingHttpResponse(
+            stream_pod_logs(function), content_type="text/plain"
+        )

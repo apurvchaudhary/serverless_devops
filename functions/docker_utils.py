@@ -43,7 +43,9 @@ class DockerBuild:
 
     def __build(self):
         try:
-            image, build_logs = self.CLIENT.images.build(path=self.path, tag=f"{self.name}:{self.version}", rm=True)
+            image, build_logs = self.CLIENT.images.build(
+                path=self.path, tag=f"{self.name}:{self.version}", rm=True
+            )
             self.function.status = "CREATED"
             self.function.image = f"{image.id}"
             self.__remove_tmp()
@@ -70,7 +72,10 @@ class DockerBuild:
             self.__write_logs(logs, push=True)
             self.function.status = "DEPLOYED"
             self.function.output = "Pushed to dockerhub successfully!!!"
-            self.CLIENT.images.remove(image.id, force=True)
+            try:
+                self.CLIENT.images.remove(self.function.image, force=True)
+            except APIError:
+                pass
         except APIError as e:
             self.function.status = "FAILED"
             self.function.output = str(e)
