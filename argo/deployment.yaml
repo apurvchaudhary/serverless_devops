@@ -26,11 +26,6 @@ spec:
           image: apurvchaudhary/status_page_django_app:latest
           command: ["/app/entrypoint.sh"]
           args: ["celery", "-A", "project", "worker", "--loglevel=info"]
-          env:
-            - name: BROKER_URL
-              value: "redis://localhost:6379/0"
-            - name: CELERY_RESULT_BACKEND
-              value: "redis://localhost:6379/0"
         - name: redis
           image: redis:7-alpine
           ports:
