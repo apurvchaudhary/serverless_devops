@@ -17,15 +17,15 @@ spec:
       containers:
         - name: web
           image: apurvchaudhary/status_page_django_app:latest
-          command: ["uvicorn", "project.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+          command: ["/app/entrypoint.sh"]
+          args: ["uvicorn", "project.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+          volumeMounts:
+            - name: shared-static
+              mountPath: /app/static
         - name: celery
           image: apurvchaudhary/status_page_django_app:latest
-          command: ["celery", "-A", "project", "worker", "--loglevel=info"]
-          environment:
-            - name: BROKER_URL
-              value: "redis://localhost:6379/0"
-            - name: CELERY_RESULT_BACKEND
-              value: "redis://localhost:6379/0"
+          command: ["/app/entrypoint.sh"]
+          args: ["celery", "-A", "project", "worker", "--loglevel=info"]
         - name: redis
           image: redis:7-alpine
           ports:
@@ -35,10 +35,14 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
+            - name: shared-static
+              mountPath: /static
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
       volumes:
+        - name: shared-static
+          emptyDir: {}
         - name: nginx-config
           configMap:
             name: nginx-config-map-org1
