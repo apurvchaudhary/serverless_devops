@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: status-page-deployment-org1
+  labels:
+    app: status-page-org1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: status-page-org1
+  template:
+    metadata:
+      labels:
+        app: status-page-org1
+    spec:
+      containers:
+        - name: web
+          image: apurvchaudhary/status_page_django_app:latest
+          command: ["/app/entrypoint.sh"]
+          args: ["uvicorn", "project.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+          volumeMounts:
+            - name: shared-static
+              mountPath: /app/static
+        - name: celery
+          image: apurvchaudhary/status_page_django_app:latest
+          command: ["/app/entrypoint.sh"]
+          args: ["celery", "-A", "project", "worker", "--loglevel=info"]
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-static
+              mountPath: /static
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: shared-static
+          emptyDir: {}
+        - name: nginx-config
+          configMap:
+            name: nginx-config-map-org1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: status-page-service-org1
+spec:
+  selector:
+    app: status-page-org1
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
