@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: status-page-deployment-org1
+  name: status-page-deployment-apurv
   labels:
     app: status-page-org1
 spec:
