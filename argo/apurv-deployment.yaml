@@ -50,7 +50,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: status-page-service-org1
+  name: status-page-service-apurv
 spec:
   selector:
     app: status-page-org1
