@@ -7,7 +7,7 @@ spec:
   - host: localhost
     http:
       paths:
-      - path: /apurv
+      - path: /
         pathType: Prefix
         backend:
           service:
@@ -17,7 +17,7 @@ spec:
   - host: localhost
     http:
       paths:
-      - path: /chaudhary
+      - path: /
         pathType: Prefix
         backend:
           service:
