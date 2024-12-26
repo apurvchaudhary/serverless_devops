@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: status-page-deployment-chaudhary
   labels:
-    app: status-page-org1
+    app: status-page-chaudhary
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: status-page-org1
+      app: status-page-chaudhary
   template:
     metadata:
       labels:
-        app: status-page-org1
+        app: status-page-chaudhary
     spec:
       containers:
         - name: web
@@ -63,7 +63,7 @@ metadata:
   name: status-page-service-chaudhary
 spec:
   selector:
-    app: status-page-org1
+    app: status-page-chaudhary
   ports:
     - protocol: TCP
       port: 80

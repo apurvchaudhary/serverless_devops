@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: status-page-deployment-apurv
   labels:
-    app: status-page-org1
+    app: status-page-apurv
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: status-page-org1
+      app: status-page-apurv
   template:
     metadata:
       labels:
-        app: status-page-org1
+        app: status-page-apurv
     spec:
       containers:
         - name: web
@@ -63,7 +63,7 @@ metadata:
   name: status-page-service-apurv
 spec:
   selector:
-    app: status-page-org1
+    app: status-page-apurv
   ports:
     - protocol: TCP
       port: 80
