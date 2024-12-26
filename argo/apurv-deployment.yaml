@@ -19,6 +19,11 @@ spec:
           image: apurvchaudhary/status_page_django_app:latest
           command: ["/app/entrypoint.sh"]
           args: ["uvicorn", "project.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+          env:
+            - name: DB_HOST
+              value: host.docker.internal
+            - name: DB_SCHEMA
+              value: apurv
           volumeMounts:
             - name: shared-static
               mountPath: /app/static
@@ -26,6 +31,11 @@ spec:
           image: apurvchaudhary/status_page_django_app:latest
           command: ["/app/entrypoint.sh"]
           args: ["celery", "-A", "project", "worker", "--loglevel=info"]
+          env:
+            - name: DB_HOST
+              value: host.docker.internal
+            - name: DB_SCHEMA
+              value: apurv
         - name: redis
           image: redis:7-alpine
           ports:
