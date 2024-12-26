@@ -4,7 +4,7 @@ metadata:
   name: org-routing-ingress
 spec:
   rules:
-  - host: localhost
+  - host: apurv.localhost
     http:
       paths:
       - path: /
@@ -14,7 +14,7 @@ spec:
             name: status-page-service-apurv
             port:
               number: 80
-  - host: localhost
+  - host: chaudhary.localhost
     http:
       paths:
       - path: /
